@@ -1,0 +1,30 @@
+set dotenv-load
+
+# list available recipes
+list:
+  just --list
+
+# watch for file changes then restart the recipe
+watch recipe:
+  cargo watch -c -s 'just {{recipe}}'
+
+# run shuttle project locally
+run:
+  cargo shuttle run
+
+# create and deploy a new shuttle project
+start:
+  cargo shuttle project start && RUST_LOG=cargo_shuttle cargo shuttle deploy --allow-dirty
+
+# update your existing shuttle project
+deploy:
+  RUST_LOG=cargo_shuttle cargo shuttle deploy --allow-dirty
+
+# restart (clean) your existing shuttle project then deploy
+restart:
+  cargo shuttle project restart && RUST_LOG=cargo_shuttle cargo shuttle deploy --allow-dirty
+
+# install or update tools
+tools:
+  cargo install --locked cargo-shuttle
+  cargo install --locked just
